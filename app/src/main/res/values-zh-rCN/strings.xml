@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">博学谷</string>
+    <string name="btn_course">课程</string>
+    <string name="btn_exercise">练习</string>
+    <string name="btn_me">我</string>
+    <string name="qr_hint">二维码</string>
+    <string name="qr_title">个人二维码</string>
+    <string name="str_name">未登录</string>
+    <string name="auto_update">自动检查更新</string>
+    <string name="str_theme">切换主题</string>
+    <string name="str_logout">注销</string>
+    <string name="color_green">绿色</string>
+    <string name="color_blue">蓝色</string>
+    <string name="color_gray">灰色</string>
+    <string name="color_purple">紫色</string>
+    <string name="color_yellow">黄色</string>
+    <string name="str_ok">确定</string>
+    <string name="str_cancel">取消</string>
+</resources>

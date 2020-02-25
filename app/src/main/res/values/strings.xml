@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">BXValley</string>
+    <string name="btn_course">Course</string>
+    <string name="btn_exercise">Exec</string>
+    <string name="btn_me">Me</string>
+    <string name="qr_hint">QR</string>
+    <string name="str_name">Unknown</string>
+    <string name="str_id" translatable="false">\@unknown</string>
+    <string name="qr_title">Personal QR code</string>
+    <string name="auto_update">Check updates automatically</string>
+    <string name="str_theme">Switch main theme</string>
+    <string name="str_logout">Logout</string>
+    <string name="color_green">Green</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_gray">Gray</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_yellow">Yellow</string>
+    <string name="str_ok">OK</string>
+    <string name="str_cancel">取消</string>
+</resources>
