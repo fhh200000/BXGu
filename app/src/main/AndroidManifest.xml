@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:windowFullscreen="true">
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".FrameworkActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>

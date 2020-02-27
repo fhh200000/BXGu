@@ -51,6 +51,8 @@ public class MeFragment extends Fragment {
             login.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
             changePassword.setVisibility(View.VISIBLE);
+            profileName.setText(StaticVariablePlacer.username);
+
         }
         final int[] radioButtons = {R.id.radio_green, R.id.radio_blue, R.id.radio_gray, R.id.radio_yellow, R.id.radio_purple};
         final String[] colors = {"green", "blue", "gray", "yellow", "purple"};
@@ -100,10 +102,21 @@ public class MeFragment extends Fragment {
                 startActivityForResult(intent,666);
             }
         });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StaticVariablePlacer.username = null;
+                login.setVisibility(View.VISIBLE);
+                logout.setVisibility(View.GONE);
+                changePassword.setVisibility(View.GONE);
+                profileName.setText(R.string.str_name);
+            }
+        });
         return view;
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
         if(requestCode == 666) {
             if(resultCode == RESULT_OK) { //登录成功
                 login.setVisibility(View.GONE);

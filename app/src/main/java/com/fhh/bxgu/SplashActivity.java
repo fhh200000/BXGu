@@ -17,6 +17,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")
     protected void onCreate(Bundle savedInstanceState) {
+        StaticVariablePlacer.username = null;
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);

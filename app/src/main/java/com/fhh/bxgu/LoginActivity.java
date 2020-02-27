@@ -2,6 +2,7 @@ package com.fhh.bxgu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
@@ -21,14 +22,15 @@ import okhttp3.Response;
 import static com.fhh.bxgu.OKHttpHolder.ADDRESS_PREFIX;
 
 public class LoginActivity extends AppCompatActivity {
+    private int theme;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int theme;
         theme = getIntent().getIntExtra("theme",R.style.green);
         setTheme(theme);
         setContentView(R.layout.activity_login);
         Button loginButton = findViewById(R.id.btn_login);
+        Button registerButton = findViewById(R.id.btn_register);
         final EditText username = findViewById(R.id.login_username);
         final EditText password = findViewById(R.id.login_password);
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +39,24 @@ public class LoginActivity extends AppCompatActivity {
                 login(username.getText().toString(),MD5Util.calculateMD5(password.getText().toString()));
             }
         });
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                intent.putExtra("theme",theme);
+                startActivityForResult(intent,233);
+            }
+        });
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode == 233) {
+            if(resultCode == RESULT_OK) { //注册成功
+                setResult(RESULT_OK);
+                finish();
+            }
+        }
     }
     private void login(final String username, String passwordWithMd5) {
         final Request request = new Request.Builder()
@@ -53,9 +73,10 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     response = OKHttpHolder.clientWithCookie.newCall(request).execute();
                         if (response.isSuccessful()) {
-                            if(Objects.requireNonNull(response.body()).string().charAt(0)=='F') {//"Fail"
+                            String result = Objects.requireNonNull(response.body()).string();
+                            if(result.charAt(0)=='F') {//"Fail"
                                 Looper.prepare();
-                                Toast.makeText(LoginActivity.this, Objects.requireNonNull(response.body()).string(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this,R.string.str_login_failed, Toast.LENGTH_SHORT).show();
                                 Looper.loop();
                             }
                             else {

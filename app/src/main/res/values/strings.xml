@@ -18,7 +18,11 @@
     <string name="color_purple">Purple</string>
     <string name="color_yellow">Yellow</string>
     <string name="str_ok">OK</string>
-    <string name="str_cancel">取消</string>
+    <string name="str_cancel">Cancel</string>
     <string name="str_user_id">User ID</string>
     <string name="str_password">Password</string>
+    <string name="str_register">Register</string>
+    <string name="str_login_failed">Login Failed!</string>
+    <string name="str_password_not_match">Two passwords do not match!</string>
+    <string name="str_confirm_password">Confirm Password</string>
 </resources>
