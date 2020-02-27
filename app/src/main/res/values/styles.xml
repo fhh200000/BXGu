@@ -4,21 +4,31 @@
     <style name="green" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/color_green</item>
         <item name="colorPrimaryDark">@color/color_green_dark</item>
+        <item name="colorControlActivated">@color/color_green_dark</item>
+        <item name="colorAccent">@color/color_green_dark</item>
     </style>
     <style name="blue" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/color_blue</item>
         <item name="colorPrimaryDark">@color/color_blue_dark</item>
+        <item name="colorControlActivated">@color/color_blue_dark</item>
+        <item name="colorAccent">@color/color_blue_dark</item>
     </style>
     <style name="yellow" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/color_yellow</item>
         <item name="colorPrimaryDark">@color/color_yellow_dark</item>
+        <item name="colorControlActivated">@color/color_yellow_dark</item>
+        <item name="colorAccent">@color/color_yellow_dark</item>
     </style>
     <style name="purple" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/color_purple</item>
         <item name="colorPrimaryDark">@color/color_purple_dark</item>
+        <item name="colorControlActivated">@color/color_purple_dark</item>
+        <item name="colorAccent">@color/color_purple_dark</item>
     </style>
     <style name="gray" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/color_gray</item>
         <item name="colorPrimaryDark">@color/color_gray_dark</item>
+        <item name="colorControlActivated">@color/color_gray_dark</item>
+        <item name="colorAccent">@color/color_gray_dark</item>
     </style>
 </resources>

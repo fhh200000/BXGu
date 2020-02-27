@@ -9,7 +9,9 @@
     <string name="qr_title">Personal QR code</string>
     <string name="auto_update">Check updates automatically</string>
     <string name="str_theme">Switch main theme</string>
+    <string name="str_change_password">Change Password</string>
     <string name="str_logout">Logout</string>
+    <string name="str_login">Login</string>
     <string name="color_green">Green</string>
     <string name="color_blue">Blue</string>
     <string name="color_gray">Gray</string>
@@ -17,4 +19,6 @@
     <string name="color_yellow">Yellow</string>
     <string name="str_ok">OK</string>
     <string name="str_cancel">取消</string>
+    <string name="str_user_id">User ID</string>
+    <string name="str_password">Password</string>
 </resources>

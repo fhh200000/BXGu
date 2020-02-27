@@ -104,7 +104,10 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
             meButton.getCompoundDrawables()[1].setTint(0xFF949494);
         buttons[tab - 1].getCompoundDrawables()[1].setTint(mainColor);
     }
-
+    @Override
+    public int getThemeId() {
+        return theme;
+    }
     @Override
     public void onThemeChanged(String theme) {
         try {

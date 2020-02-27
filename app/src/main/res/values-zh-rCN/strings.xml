@@ -17,4 +17,8 @@
     <string name="color_yellow">黄色</string>
     <string name="str_ok">确定</string>
     <string name="str_cancel">取消</string>
+    <string name="str_change_password">更换密码</string>
+    <string name="str_login">登录</string>
+    <string name="str_user_id">用户ID</string>
+    <string name="str_password">密码</string>
 </resources>
