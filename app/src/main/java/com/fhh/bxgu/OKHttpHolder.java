@@ -10,11 +10,9 @@ import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 
-public class OKHttpHolder {
-    public static OkHttpClient clientWithCookie =  new OkHttpClient.Builder()
+class OKHttpHolder {
+    static OkHttpClient clientWithCookie =  new OkHttpClient.Builder()
             .cookieJar(new CookieJar() {
                 private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
                 @Override
@@ -29,7 +27,7 @@ public class OKHttpHolder {
                 }
             })
             .build();
-    public static final String ADDRESS_PREFIX = "http://10.0.2.2:8080/";
+    static final String ADDRESS_PREFIX = "http://10.0.2.2:8080/";
 }
 
 

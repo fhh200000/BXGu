@@ -36,7 +36,7 @@ public class MeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_me, container, false);
-        ImageView qrButton = view.findViewById(R.id.btn_qr);
+        ImageView qrButton= view.findViewById(R.id.btn_qr);
         TextView updateTheme = view.findViewById(R.id.text_theme);
         login = view.findViewById(R.id.text_login);
         logout = view.findViewById(R.id.text_logout);

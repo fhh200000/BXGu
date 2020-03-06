@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 
 import androidx.core.app.ActivityCompat;
 
-public class SDPermUtil {
+class SDPermUtil {
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSIONS_STORAGE = {

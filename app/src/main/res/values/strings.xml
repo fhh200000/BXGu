@@ -25,4 +25,5 @@
     <string name="str_login_failed">Login Failed!</string>
     <string name="str_password_not_match">Two passwords do not match!</string>
     <string name="str_confirm_password">Confirm Password</string>
+    <string name="str_confirm_exit">Press return again to exit.</string>
 </resources>

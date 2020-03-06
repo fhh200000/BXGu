@@ -4,13 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/ad_pager"
+    <RelativeLayout
+        android:id="@+id/pager_wrapper"
         android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:background="@color/color_gray">
+        android:layout_height="match_parent">
 
-    </androidx.viewpager2.widget.ViewPager2>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/ad_pager"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:background="@color/color_gray">
+
+        </androidx.viewpager2.widget.ViewPager2>
+
+        <LinearLayout
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_alignRight="@id/ad_pager"
+            android:background="@color/color_green"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="状态指示器" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/course_view"

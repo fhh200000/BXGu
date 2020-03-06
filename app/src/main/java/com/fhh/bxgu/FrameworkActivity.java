@@ -3,8 +3,11 @@ package com.fhh.bxgu;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -161,6 +164,26 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         getWindow().setStatusBarColor(mainColorDark);
         //更新intent中的数据。
         getIntent().putExtra("theme",this.theme);
+    }
+    static long lastClick = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(keyCode==KeyEvent.KEYCODE_BACK) {
+            long timeNow = System.currentTimeMillis();
+            Log.e("233333", String.format("%d",timeNow-lastClick));
+            if(timeNow-lastClick<2000) {
+                finish();
+                return true;
+            }
+            else {
+                Toast.makeText(FrameworkActivity.this,R.string.str_confirm_exit,Toast.LENGTH_SHORT).show();
+                lastClick = timeNow;
+                return false;
+            }
+        }
+        else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
     @Override
     public int getMainColorDark() {

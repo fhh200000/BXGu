@@ -70,7 +70,10 @@ public class SplashActivity extends AppCompatActivity {
 
         setTheme(theme);
         setContentView(R.layout.activity_splash);
-        //新开一个定时器用于跳转页面。
+        //从这里开始偷偷下载广告。
+        ADBannerStorage bannerStorage = new ADBannerStorage();
+        bannerStorage.load();
+        //开一个定时器用于跳转页面。
         CountDownTimer countDownTimer = new CountDownTimer(3200,2200) {
             @Override
             public void onTick(long l) {
