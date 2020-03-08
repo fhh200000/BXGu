@@ -8,6 +8,8 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -22,6 +24,7 @@ public class CourseFragment extends Fragment {
     private ViewPager2 adPager;
     private TimerTask timerTask;
     private int currentADPage=0,totalADPage=0;
+    private ImageView[] dots;
     @Override
     public void onAttach(@NotNull Context context) {
         super.onAttach(context);
@@ -36,8 +39,9 @@ public class CourseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_course, container, false);
+        LinearLayout adIndicator = view.findViewById(R.id.ad_indicator);
         adPager = view.findViewById(R.id.ad_pager);
-        View pageWrapper = view.findViewById(R.id.pager_wrapper);
+        final View pageWrapper = view.findViewById(R.id.pager_wrapper);
         ViewGroup.LayoutParams adLayout = pageWrapper.getLayoutParams();
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             adLayout.width  = StaticVariablePlacer.screenSize.x;
@@ -51,7 +55,33 @@ public class CourseFragment extends Fragment {
         }
         pageWrapper.setLayoutParams(adLayout);
         adPager.setAdapter(new ADViewAdapter(getContext(),getResources().getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE));
+        adPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                currentADPage = position;
+                changeIndicator();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+            }
+        });
         totalADPage = StaticVariablePlacer.adBannerStorage.size();
+        dots = new ImageView[totalADPage];
+        ViewGroup.LayoutParams dotLayout = new ViewGroup.LayoutParams((int)(20*StaticVariablePlacer.dpRatio),(int)(20*StaticVariablePlacer.dpRatio));
+        for(int i=0;i<totalADPage;i++) {
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageResource(R.drawable.ic_dot);
+            dots[i].setLayoutParams(dotLayout);
+            adIndicator.addView(dots[i]);
+        }
         timerTask = getTask();
         timer.schedule(timerTask, 0, 5000);
         timerTask.run();
@@ -81,4 +111,14 @@ public class CourseFragment extends Fragment {
             return false;
         }
     });
+    private int prevSelected=0;
+    private ViewGroup.LayoutParams prevIndicatorLayoutParams= new LinearLayout.LayoutParams((int)(20*StaticVariablePlacer.dpRatio), (int)(20*StaticVariablePlacer.dpRatio)),
+                                   newIndicatorLayoutParams = new LinearLayout.LayoutParams((int)(30*StaticVariablePlacer.dpRatio), (int)(30*StaticVariablePlacer.dpRatio));
+    private void changeIndicator() {
+        dots[prevSelected].setImageResource(R.drawable.ic_dot);
+        dots[prevSelected].setLayoutParams(prevIndicatorLayoutParams);
+        dots[currentADPage].setLayoutParams(newIndicatorLayoutParams);
+        dots[currentADPage].setImageResource(R.drawable.ic_selected);
+        prevSelected = currentADPage;
+    }
 }

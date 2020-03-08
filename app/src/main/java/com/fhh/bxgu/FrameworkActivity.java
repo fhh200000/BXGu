@@ -3,6 +3,7 @@ package com.fhh.bxgu;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,6 +33,9 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         StaticVariablePlacer.meFragmentCallbacks = this;
         StaticVariablePlacer.screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(StaticVariablePlacer.screenSize);
+        DisplayMetrics metrics =new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        StaticVariablePlacer.dpRatio = metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
         theme = getIntent().getIntExtra("theme", R.style.green);
         setTheme(theme);
         setContentView(R.layout.activity_framework);
@@ -170,7 +174,6 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if(keyCode==KeyEvent.KEYCODE_BACK) {
             long timeNow = System.currentTimeMillis();
-            Log.e("233333", String.format("%d",timeNow-lastClick));
             if(timeNow-lastClick<2000) {
                 finish();
                 return true;

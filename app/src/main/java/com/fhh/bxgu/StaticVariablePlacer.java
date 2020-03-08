@@ -7,5 +7,6 @@ class StaticVariablePlacer {
     static MeFragment.Callbacks meFragmentCallbacks;
     static ADBannerStorage adBannerStorage;
     static Point screenSize;
+    static float dpRatio;
     static String username,nickname;
 }

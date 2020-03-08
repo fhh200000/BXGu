@@ -35,7 +35,7 @@ import static com.fhh.bxgu.OKHttpHolder.ADDRESS_PREFIX;
         if(!testFile.exists()) {
             boolean result = testFile.mkdirs();
             if(!result) {
-                Log.e("ddddddd","Cannot create folder.");
+                Log.e("BXGu","Cannot create folder.");
             }
         }
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/course"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,19 +21,12 @@
         </androidx.viewpager2.widget.ViewPager2>
 
         <LinearLayout
+            android:id="@+id/ad_indicator"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/white"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="状态指示器" />
-        </LinearLayout>
+            android:gravity="center"
+            android:orientation="horizontal" />
 
     </RelativeLayout>
 
