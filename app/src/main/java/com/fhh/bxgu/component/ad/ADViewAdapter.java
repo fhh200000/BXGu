@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.component.ad;
 
 import android.content.Context;
 import android.view.View;
@@ -8,9 +8,11 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-class ADViewAdapter extends RecyclerView.Adapter<ADViewHolder> {
-    private Context context;
-    private boolean isLandscape;
+import com.fhh.bxgu.shared.StaticVariablePlacer;
+
+public class ADViewAdapter extends RecyclerView.Adapter<ADViewHolder> {
+    private final Context context;
+    private final boolean isLandscape;
     @NonNull
     @Override
     public ADViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -18,7 +20,7 @@ class ADViewAdapter extends RecyclerView.Adapter<ADViewHolder> {
         view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         return new ADViewHolder(view);
     }
-    ADViewAdapter(Context context,boolean isLandscape) {
+    public ADViewAdapter(Context context, boolean isLandscape) {
         this.context = context;
         this.isLandscape = isLandscape;
     }

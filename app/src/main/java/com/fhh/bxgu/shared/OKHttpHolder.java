@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.shared;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -11,8 +11,8 @@ import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
-class OKHttpHolder {
-    static OkHttpClient clientWithCookie =  new OkHttpClient.Builder()
+public class OKHttpHolder {
+    public static final OkHttpClient clientWithCookie =  new OkHttpClient.Builder()
             .cookieJar(new CookieJar() {
                 private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
                 @Override
@@ -27,7 +27,7 @@ class OKHttpHolder {
                 }
             })
             .build();
-    static final String ADDRESS_PREFIX = "http://10.0.2.2:8080/";
+    public static final String ADDRESS_PREFIX = "http://10.0.2.2:8080/";
 }
 
 

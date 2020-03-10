@@ -1,10 +1,9 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.activity;
 
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -15,16 +14,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.fhh.bxgu.fragment.CourseFragment;
+import com.fhh.bxgu.fragment.ExerciseFragment;
+import com.fhh.bxgu.fragment.MeFragment;
+import com.fhh.bxgu.R;
+import com.fhh.bxgu.shared.StaticVariablePlacer;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class FrameworkActivity extends AppCompatActivity implements MeFragment.Callbacks {
-    final FragmentManager fm = getSupportFragmentManager();
-    Fragment courseFragment, exerciseFragment, meFragment;
-    Fragment[] fragments;
-    TextView courseButton, exerciseButton, meButton; //没错TextView变成了按钮
-    TextView[] buttons;
+    private final FragmentManager fm = getSupportFragmentManager();
+    private Fragment courseFragment;
+    private Fragment exerciseFragment;
+    private Fragment meFragment;
+    private Fragment[] fragments;
+    private TextView courseButton;
+    private TextView exerciseButton;
+    private TextView meButton; //没错TextView变成了按钮
+    private TextView[] buttons;
     private int theme, mainColor,mainColorDark, currentTab = 0;
     //抽象出FrameworkActivity的接口。
     @Override
@@ -35,7 +44,7 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         getWindowManager().getDefaultDisplay().getSize(StaticVariablePlacer.screenSize);
         DisplayMetrics metrics =new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        StaticVariablePlacer.dpRatio = metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
+        StaticVariablePlacer.dpRatio = (float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
         theme = getIntent().getIntExtra("theme", R.style.green);
         setTheme(theme);
         setContentView(R.layout.activity_framework);
@@ -93,7 +102,7 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
     }
 
     //抽象出切换页的函数。
-    void switchPage(int tab) {
+    private void switchPage(int tab) {
         if (currentTab != tab) {
             fm.beginTransaction()
                     .replace(R.id.main_fragment_container, fragments[tab - 1])
@@ -102,7 +111,7 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         currentTab = tab;
     }
 
-    void switchPageTab(int tab) {
+    private void switchPageTab(int tab) {
         if (tab != 1)
             courseButton.getCompoundDrawables()[1].setTint(0xFF949494);
         if (tab != 2)
@@ -169,7 +178,7 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         //更新intent中的数据。
         getIntent().putExtra("theme",this.theme);
     }
-    static long lastClick = 0;
+    private static long lastClick = 0;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if(keyCode==KeyEvent.KEYCODE_BACK) {

@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.fhh.bxgu.shared.OKHttpHolder;
+import com.fhh.bxgu.R;
+import com.fhh.bxgu.shared.StaticVariablePlacer;
+import com.fhh.bxgu.utility.MD5Util;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -18,14 +21,14 @@ import okhttp3.FormBody;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.fhh.bxgu.OKHttpHolder.ADDRESS_PREFIX;
+import static com.fhh.bxgu.shared.OKHttpHolder.ADDRESS_PREFIX;
 
 public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int theme = getIntent().getIntExtra("theme",R.style.green);
+        int theme = getIntent().getIntExtra("theme", R.style.green);
         setTheme(theme);
         setContentView(R.layout.activity_register);
         final TextView username = findViewById(R.id.register_username);

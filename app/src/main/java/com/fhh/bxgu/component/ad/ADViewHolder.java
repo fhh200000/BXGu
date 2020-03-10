@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.component.ad;
 
 import android.graphics.Bitmap;
 import android.view.View;
@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 class ADViewHolder extends RecyclerView.ViewHolder {
-    private ImageView imageView;
+    private final ImageView imageView;
     ADViewHolder(@NonNull View itemView) {
         super(itemView);
         this.imageView = (ImageView) itemView;

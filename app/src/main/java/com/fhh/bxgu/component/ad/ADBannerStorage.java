@@ -1,8 +1,11 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.component.ad;
 
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
+
+import com.fhh.bxgu.shared.OKHttpHolder;
+import com.fhh.bxgu.shared.StaticVariablePlacer;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -13,7 +16,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,13 +25,13 @@ import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.fhh.bxgu.OKHttpHolder.ADDRESS_PREFIX;
+import static com.fhh.bxgu.shared.OKHttpHolder.ADDRESS_PREFIX;
 
- class ADBannerStorage {
-    private List<ADBanner> banners = new ArrayList<>();
-    private String ExternalPath =  Environment.getExternalStorageDirectory().getAbsolutePath().concat("/BXGu/");
-    private boolean loaded;
-    ADBannerStorage() {
+ public class ADBannerStorage {
+    private final List<ADBanner> banners = new ArrayList<>();
+    private final String ExternalPath =  Environment.getExternalStorageDirectory().getAbsolutePath().concat("/BXGu/ad/");
+
+     public ADBannerStorage() {
         StaticVariablePlacer.adBannerStorage = this;
         File testFile = new File(ExternalPath);
         if(!testFile.exists()) {
@@ -39,13 +41,13 @@ import static com.fhh.bxgu.OKHttpHolder.ADDRESS_PREFIX;
             }
         }
     }
-    int size() {
+    public int size() {
         return banners.size();
     }
     ADBanner getBanner(int pos) {
         return banners.get(pos);
     }
-    void load() {
+    public void load() {
         final Request getADListRequest =  new Request.Builder()
                 .url(ADDRESS_PREFIX+"get_ad_list")
                 .get()
@@ -62,7 +64,6 @@ import static com.fhh.bxgu.OKHttpHolder.ADDRESS_PREFIX;
                             banners.add(new ADBanner(resultArray.getString(i)));
                             loadImage(i);
                         }
-                        loaded = true;
                     }
                 }
                 catch(IOException | JSONException ex) {
@@ -92,9 +93,8 @@ import static com.fhh.bxgu.OKHttpHolder.ADDRESS_PREFIX;
                     }
 
                     @Override
-                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    public void onResponse(@NotNull Call call, @NotNull Response response) {
                         try {
-                            InputStream is = Objects.requireNonNull(response.body()).byteStream();
                             FileOutputStream fos = new FileOutputStream(bgFile);
                             fos.write(Objects.requireNonNull(response.body()).bytes());
                             fos.close();
@@ -130,7 +130,7 @@ import static com.fhh.bxgu.OKHttpHolder.ADDRESS_PREFIX;
                     }
 
                     @Override
-                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    public void onResponse(@NotNull Call call, @NotNull Response response) {
                         try {
                             FileOutputStream fos = new FileOutputStream(bgFilePort);
                             fos.write(Objects.requireNonNull(response.body()).bytes());

@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.utility;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

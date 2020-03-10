@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.WindowManager;
+
+import com.fhh.bxgu.R;
+import com.fhh.bxgu.utility.SDPermUtil;
+import com.fhh.bxgu.component.ad.ADBannerStorage;
+import com.fhh.bxgu.shared.StaticVariablePlacer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,7 +87,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                Intent intent = new Intent(SplashActivity.this,FrameworkActivity.class);
+                Intent intent = new Intent(SplashActivity.this, FrameworkActivity.class);
                 intent.putExtra("theme",theme);
                 startActivity(intent);
                 finish();

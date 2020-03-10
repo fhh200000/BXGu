@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.utility;
 
 import android.Manifest;
 import android.app.Activity;
@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 
 import androidx.core.app.ActivityCompat;
 
-class SDPermUtil {
+public class SDPermUtil {
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSIONS_STORAGE = {

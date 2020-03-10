@@ -1,11 +1,11 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.component.ad;
 
 import android.graphics.Bitmap;
 
 class ADBanner {
     //图片，GUID
     private Bitmap bitmap,bitmapPort;
-    private String GUID;
+    private final String GUID;
     ADBanner(String GUID) {
         this.GUID = GUID;
     }

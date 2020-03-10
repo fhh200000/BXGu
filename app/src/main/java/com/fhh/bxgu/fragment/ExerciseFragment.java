@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+
+import com.fhh.bxgu.R;
 
 import org.jetbrains.annotations.NotNull;
 

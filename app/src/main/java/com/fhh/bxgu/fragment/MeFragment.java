@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,6 +13,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import com.fhh.bxgu.R;
+import com.fhh.bxgu.activity.LoginActivity;
+import com.fhh.bxgu.shared.StaticVariablePlacer;
+import com.fhh.bxgu.utility.QRCodeUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -97,7 +102,7 @@ public class MeFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),LoginActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.putExtra("theme",StaticVariablePlacer.meFragmentCallbacks.getThemeId());
                 startActivityForResult(intent,666);
             }

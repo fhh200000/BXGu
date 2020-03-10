@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.utility;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -15,9 +15,9 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import java.util.Hashtable;
 
 
-class QRCodeUtil {
+public class QRCodeUtil {
     @Nullable
-    static Bitmap createQRCodeBitmap(String content, int width, int height, int color){
+    public static Bitmap createQRCodeBitmap(String content, int width, int height, int color){
         if(TextUtils.isEmpty(content)){ // 字符串内容判空
             return null;
         }

@@ -1,4 +1,4 @@
-package com.fhh.bxgu;
+package com.fhh.bxgu.fragment;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -14,13 +14,17 @@ import android.widget.LinearLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.fhh.bxgu.component.ad.ADViewAdapter;
+import com.fhh.bxgu.R;
+import com.fhh.bxgu.shared.StaticVariablePlacer;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class CourseFragment extends Fragment {
-    private Timer timer=new Timer(true);;
+    private final Timer timer=new Timer(true);
     private ViewPager2 adPager;
     private TimerTask timerTask;
     private int currentADPage=0,totalADPage=0;
@@ -102,7 +106,7 @@ public class CourseFragment extends Fragment {
             }
         };
     }
-    private Handler handler = new Handler(new Handler.Callback() {
+    private final Handler handler = new Handler(new Handler.Callback() {
         public boolean handleMessage(@NotNull Message msg) {
             if(msg.what == 1){
                 currentADPage = (currentADPage+1)%totalADPage;
@@ -112,8 +116,8 @@ public class CourseFragment extends Fragment {
         }
     });
     private int prevSelected=0;
-    private ViewGroup.LayoutParams prevIndicatorLayoutParams= new LinearLayout.LayoutParams((int)(20*StaticVariablePlacer.dpRatio), (int)(20*StaticVariablePlacer.dpRatio)),
-                                   newIndicatorLayoutParams = new LinearLayout.LayoutParams((int)(30*StaticVariablePlacer.dpRatio), (int)(30*StaticVariablePlacer.dpRatio));
+    private final ViewGroup.LayoutParams prevIndicatorLayoutParams= new LinearLayout.LayoutParams((int)(20*StaticVariablePlacer.dpRatio), (int)(20*StaticVariablePlacer.dpRatio));
+    private final ViewGroup.LayoutParams newIndicatorLayoutParams = new LinearLayout.LayoutParams((int)(30*StaticVariablePlacer.dpRatio), (int)(30*StaticVariablePlacer.dpRatio));
     private void changeIndicator() {
         dots[prevSelected].setImageResource(R.drawable.ic_dot);
         dots[prevSelected].setLayoutParams(prevIndicatorLayoutParams);
