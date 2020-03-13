@@ -17,13 +17,23 @@
     <string name="color_yellow">黄色</string>
     <string name="str_ok">确定</string>
     <string name="str_cancel">取消</string>
+    <string name="str_user_settings">用户设置</string>
     <string name="str_change_password">更换密码</string>
     <string name="str_login">登录</string>
     <string name="str_user_id">用户ID</string>
     <string name="str_password">密码</string>
     <string name="str_register">注册</string>
+    <string name="str_submit">提交</string>
     <string name="str_login_failed">登录失败!</string>
     <string name="str_password_not_match">两次密码输入不一致!</string>
     <string name="str_confirm_password">确认密码</string>
     <string name="str_confirm_exit">再次点击返回以退出</string>
+    <string name="str_current_password">当前密码</string>
+    <string name="str_new_password">新密码</string>
+    <string name="str_password_confirm_question">密保问题</string>
+    <string name="str_confirm_question_answer">问题答案</string>
+    <string name="btn_set_password_protect">设置密保</string>
+    <string name="btn_change_password">更改密码</string>
+    <string name="str_operation_success">操作成功！</string>
+    <string name="str_operation_failed">操作失败！</string>
 </resources>

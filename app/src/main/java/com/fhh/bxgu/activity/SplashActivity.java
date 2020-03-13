@@ -16,14 +16,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Scanner;
 public class SplashActivity extends AppCompatActivity {
 
     @Override
     @SuppressWarnings("ResultOfMethodCallIgnored")
     protected void onCreate(Bundle savedInstanceState) {
-        StaticVariablePlacer.username = null;
         super.onCreate(savedInstanceState);
+        StaticVariablePlacer.username = null;
+        StaticVariablePlacer.baseDirPath = Objects.requireNonNull(getExternalFilesDir(null)).getAbsolutePath();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         SDPermUtil.verifyStoragePermissions(this);

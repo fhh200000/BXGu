@@ -3,12 +3,14 @@
     <string name="btn_course">Course</string>
     <string name="btn_exercise">Exec</string>
     <string name="btn_me">Me</string>
+    <string name="btn_set_password_protect">Set password protect</string>
     <string name="qr_hint">QR</string>
     <string name="str_name">Unknown</string>
     <string name="str_id" translatable="false">\@unknown</string>
     <string name="qr_title">Personal QR code</string>
     <string name="auto_update">Check updates automatically</string>
     <string name="str_theme">Switch main theme</string>
+    <string name="str_user_settings">User Settings</string>
     <string name="str_change_password">Change Password</string>
     <string name="str_logout">Logout</string>
     <string name="str_login">Login</string>
@@ -22,8 +24,16 @@
     <string name="str_user_id">User ID</string>
     <string name="str_password">Password</string>
     <string name="str_register">Register</string>
+    <string name="str_submit">Submit</string>
     <string name="str_login_failed">Login Failed!</string>
+    <string name="str_current_password">Current password</string>
+    <string name="str_new_password">New password</string>
+    <string name="str_password_confirm_question">Password protect question</string>
+    <string name="str_confirm_question_answer">Protect question answer</string>
     <string name="str_password_not_match">Two passwords do not match!</string>
     <string name="str_confirm_password">Confirm Password</string>
     <string name="str_confirm_exit">Press return again to exit.</string>
+    <string name="btn_change_password">Change Password</string>
+    <string name="str_operation_success">Operation success!</string>
+    <string name="str_operation_failed">Operation failed!</string>
 </resources>

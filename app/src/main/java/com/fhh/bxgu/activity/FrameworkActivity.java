@@ -26,9 +26,6 @@ import java.io.IOException;
 
 public class FrameworkActivity extends AppCompatActivity implements MeFragment.Callbacks {
     private final FragmentManager fm = getSupportFragmentManager();
-    private Fragment courseFragment;
-    private Fragment exerciseFragment;
-    private Fragment meFragment;
     private Fragment[] fragments;
     private TextView courseButton;
     private TextView exerciseButton;
@@ -49,9 +46,7 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         setTheme(theme);
         setContentView(R.layout.activity_framework);
         //绑定按钮界面元件。
-        courseFragment = new CourseFragment();
-        exerciseFragment = new ExerciseFragment();
-        meFragment = new MeFragment();
+        Fragment courseFragment = new CourseFragment(),exerciseFragment = new ExerciseFragment(),meFragment = new MeFragment();
         courseButton = findViewById(R.id.button_course);
         exerciseButton = findViewById(R.id.button_exercise);
         meButton = findViewById(R.id.button_me);

@@ -1,7 +1,6 @@
 package com.fhh.bxgu.component.ad;
 
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.util.Log;
 
 import com.fhh.bxgu.shared.OKHttpHolder;
@@ -29,11 +28,10 @@ import static com.fhh.bxgu.shared.OKHttpHolder.ADDRESS_PREFIX;
 
  public class ADBannerStorage {
     private final List<ADBanner> banners = new ArrayList<>();
-    private final String ExternalPath =  Environment.getExternalStorageDirectory().getAbsolutePath().concat("/BXGu/ad/");
-
+    private final String externalPath = StaticVariablePlacer.baseDirPath.concat("/ad/");
      public ADBannerStorage() {
         StaticVariablePlacer.adBannerStorage = this;
-        File testFile = new File(ExternalPath);
+        File testFile = new File(externalPath);
         if(!testFile.exists()) {
             boolean result = testFile.mkdirs();
             if(!result) {
@@ -74,7 +72,7 @@ import static com.fhh.bxgu.shared.OKHttpHolder.ADDRESS_PREFIX;
     }
     private void loadImage(final int id) {
         final String filename = banners.get(id).getGUID();
-        final File bgFile = new File(ExternalPath+filename+".png");
+        final File bgFile = new File(externalPath+filename+".png");
         try {
             if (bgFile.exists()) {
                 FileInputStream fis = new FileInputStream(bgFile);
@@ -111,7 +109,7 @@ import static com.fhh.bxgu.shared.OKHttpHolder.ADDRESS_PREFIX;
         catch(IOException ex) {
             ex.printStackTrace();
         }
-        final File bgFilePort = new File(ExternalPath+filename+"_port.png");
+        final File bgFilePort = new File(externalPath+filename+"_port.png");
         try {
             if (bgFilePort.exists()) {
                 FileInputStream fis = new FileInputStream(bgFilePort);

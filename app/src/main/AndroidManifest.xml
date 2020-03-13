@@ -8,12 +8,13 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:windowFullscreen="true"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:windowFullscreen="true">
+        <activity android:name=".activity.PwdChgProtectActivity"></activity>
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.FrameworkActivity" />

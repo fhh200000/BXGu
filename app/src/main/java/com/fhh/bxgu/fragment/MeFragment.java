@@ -2,30 +2,60 @@ package com.fhh.bxgu.fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import com.fhh.bxgu.R;
 import com.fhh.bxgu.activity.LoginActivity;
+import com.fhh.bxgu.activity.PwdChgProtectActivity;
 import com.fhh.bxgu.shared.StaticVariablePlacer;
+import com.fhh.bxgu.utility.BottomDialogUtil;
 import com.fhh.bxgu.utility.QRCodeUtil;
 
 import org.jetbrains.annotations.NotNull;
 
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.app.Activity.RESULT_OK;
 
 public class MeFragment extends Fragment {
-    private TextView changePassword,logout,login;
+    private TextView userSettings,logout,login;
     private TextView profileName;
+    //空间换时间，提前加载所有信息。
+    private final String[] colorNames = {"green", "blue", "gray", "yellow", "purple"};
+    private final @StringRes int[] colorHints = {
+            R.string.color_green,
+            R.string.color_blue,
+            R.string.color_gray,
+            R.string.color_yellow,
+            R.string.color_purple
+    };
+    private final @ColorRes int[] colorPrimaries = {
+            R.color.color_green,
+            R.color.color_blue,
+            R.color.color_gray,
+            R.color.color_yellow,
+            R.color.color_purple
+    };
+    private final @ColorRes int[] colorDarkPrimaries = {
+            R.color.color_green_dark,
+            R.color.color_blue_dark,
+            R.color.color_gray_dark,
+            R.color.color_yellow_dark,
+            R.color.color_purple_dark
+    };
     @Override
     public void onAttach(@NotNull Context context) {
         super.onAttach(context);
@@ -38,29 +68,32 @@ public class MeFragment extends Fragment {
 
     @Override
     @SuppressWarnings("InflateParams")
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_me, container, false);
-        ImageView qrButton= view.findViewById(R.id.btn_qr);
+        final ImageView qrButton= view.findViewById(R.id.btn_qr);
         TextView updateTheme = view.findViewById(R.id.text_theme);
         login = view.findViewById(R.id.text_login);
         logout = view.findViewById(R.id.text_logout);
-        changePassword = view.findViewById(R.id.text_change_password);
+        userSettings = view.findViewById(R.id.text_user_settings);
         profileName = view.findViewById(R.id.profile_name);
+        CircleImageView imageView = view.findViewById(R.id.profile_image);
         if(StaticVariablePlacer.username==null) {
             login.setVisibility(View.VISIBLE);
             logout.setVisibility(View.GONE);
-            changePassword.setVisibility(View.GONE);
+            userSettings.setVisibility(View.GONE);
         }
         else {
             login.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
-            changePassword.setVisibility(View.VISIBLE);
+            userSettings.setVisibility(View.VISIBLE);
             profileName.setText(StaticVariablePlacer.username);
 
         }
-        final int[] radioButtons = {R.id.radio_green, R.id.radio_blue, R.id.radio_gray, R.id.radio_yellow, R.id.radio_purple};
-        final String[] colors = {"green", "blue", "gray", "yellow", "purple"};
+
+        if(StaticVariablePlacer.profileImage!=null) {
+            imageView.setImageBitmap(StaticVariablePlacer.profileImage);
+        }
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,25 +111,25 @@ public class MeFragment extends Fragment {
         updateTheme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final View themeChooser = getLayoutInflater().inflate(R.layout.dialog_theme_chooser, null);
-                final RadioGroup rg = themeChooser.findViewById(R.id.rg_theme);
-                new AlertDialog.Builder(getContext())
-                        .setView(themeChooser)
-                        .setTitle("请选择主题")
-                        .setPositiveButton(R.string.str_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                int selected = rg.getCheckedRadioButtonId();
-                                for (int i = 0; i < radioButtons.length; i++) {
-                                    if (selected == radioButtons[i]) {
-                                        StaticVariablePlacer.meFragmentCallbacks.onThemeChanged(colors[i]);
-                                    }
-                                }
-                            }
-                        })
-                        .setNegativeButton(R.string.str_cancel, null)
-                        .show();
-
+                Resources res = getResources();
+                final BottomDialogUtil.BottomDialogUtilBuilder builder = BottomDialogUtil.builder(getContext());
+                for(int i=0;i<5;i++) {
+                    View basicView = View.inflate(getContext(),R.layout.single_theme_bar,null);
+                    ImageView hintImage = basicView.findViewById(R.id.theme_preview);
+                    TextView hintString = basicView.findViewById(R.id.theme_name);
+                    hintImage.setBackgroundColor(res.getColor(colorPrimaries[i]));
+                    hintImage.getDrawable().setTint(res.getColor(colorDarkPrimaries[i]));
+                    hintString.setText(colorHints[i]);
+                    final int current = i;
+                    builder.addItem(basicView, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            StaticVariablePlacer.meFragmentCallbacks.onThemeChanged(colorNames[current]);
+                            builder.quit();
+                        }
+                    });
+                }
+                builder.show();
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -113,8 +146,52 @@ public class MeFragment extends Fragment {
                 StaticVariablePlacer.username = null;
                 login.setVisibility(View.VISIBLE);
                 logout.setVisibility(View.GONE);
-                changePassword.setVisibility(View.GONE);
+                userSettings.setVisibility(View.GONE);
                 profileName.setText(R.string.str_name);
+            }
+        });
+        userSettings.setOnClickListener(new View.OnClickListener() {
+             BottomDialogUtil.BottomDialogUtilBuilder builder;
+            @Override
+            public void onClick(View v) {
+                Context context = getContext();
+                TextView changePassword = new TextView(context);
+                changePassword.setHeight((int)(60*StaticVariablePlacer.dpRatio));
+                changePassword.setGravity(Gravity.CENTER);
+                changePassword.setText(R.string.btn_change_password);
+                changePassword.setTextSize(16);
+                changePassword.setTextColor(0xFF000000);
+                changePassword.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), PwdChgProtectActivity.class);
+                        intent.putExtra("theme",StaticVariablePlacer.meFragmentCallbacks.getThemeId());
+                        intent.putExtra("action",PwdChgProtectActivity.RESET_PASSWORD);
+                        startActivityForResult(intent,888);
+                        builder.quit();
+
+                    }
+                });
+                TextView setPasswordChallenge = new TextView(context);
+                setPasswordChallenge.setHeight((int)(60*StaticVariablePlacer.dpRatio));
+                setPasswordChallenge.setText(R.string.btn_set_password_protect);
+                setPasswordChallenge.setGravity(Gravity.CENTER);
+                setPasswordChallenge.setTextColor(0xFF000000);
+                setPasswordChallenge.setTextSize(16);
+                setPasswordChallenge.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), PwdChgProtectActivity.class);
+                        intent.putExtra("theme",StaticVariablePlacer.meFragmentCallbacks.getThemeId());
+                        intent.putExtra("action",PwdChgProtectActivity.SET_PASSWORD_PROTECT);
+                        startActivityForResult(intent,888);
+                        builder.quit();
+                    }
+                });
+                builder = BottomDialogUtil.builder(context);
+                builder .addItem(changePassword)
+                        .addItem(setPasswordChallenge)
+                        .show();
             }
         });
         return view;
@@ -126,7 +203,7 @@ public class MeFragment extends Fragment {
             if(resultCode == RESULT_OK) { //登录成功
                 login.setVisibility(View.GONE);
                 logout.setVisibility(View.VISIBLE);
-                changePassword.setVisibility(View.VISIBLE);
+                userSettings.setVisibility(View.VISIBLE);
                 profileName.setText(StaticVariablePlacer.username);
             }
         }

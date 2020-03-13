@@ -1,5 +1,6 @@
 package com.fhh.bxgu.shared;
 
+import android.graphics.Bitmap;
 import android.graphics.Point;
 
 import com.fhh.bxgu.component.ad.ADBannerStorage;
@@ -12,4 +13,7 @@ public class StaticVariablePlacer {
     public static Point screenSize;
     public static float dpRatio;
     public static String username;
+    public static String nickname;
+    public static Bitmap profileImage;
+    public static String baseDirPath;
 }
