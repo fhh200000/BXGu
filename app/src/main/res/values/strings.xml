@@ -36,4 +36,5 @@
     <string name="btn_change_password">Change Password</string>
     <string name="str_operation_success">Operation success!</string>
     <string name="str_operation_failed">Operation failed!</string>
+    <string name="str_exec_count">%d exercises</string>
 </resources>

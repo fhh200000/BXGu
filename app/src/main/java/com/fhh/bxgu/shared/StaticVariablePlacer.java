@@ -5,6 +5,7 @@ import android.graphics.Point;
 
 import com.fhh.bxgu.component.ad.ADBannerStorage;
 import com.fhh.bxgu.fragment.MeFragment;
+import com.fhh.bxgu.utility.LanguageUtil;
 
 public class StaticVariablePlacer {
     //此处存放一些静态变量。
@@ -16,4 +17,5 @@ public class StaticVariablePlacer {
     public static String nickname;
     public static Bitmap profileImage;
     public static String baseDirPath;
+    public static LanguageUtil languageUtil;
 }

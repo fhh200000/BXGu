@@ -5,10 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView2"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/exec_chapter_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Exercise Fragment!"
-        android:textSize="20sp" />
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -28,6 +28,7 @@ public class OKHttpHolder {
             })
             .build();
     public static final String ADDRESS_PREFIX = "https://cloud.fhh200000.com/bxgu/";
+    //public static final String ADDRESS_PREFIX = "http://10.0.2.2:8080/";
 }
 
 

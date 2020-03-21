@@ -17,13 +17,14 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.fhh.bxgu.component.ad.ADViewAdapter;
 import com.fhh.bxgu.R;
 import com.fhh.bxgu.shared.StaticVariablePlacer;
+import com.fhh.bxgu.utility.LanguageUtil;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class CourseFragment extends Fragment {
+public class CourseFragment extends Fragment implements LanguageUtil.Callbacks {
     private final Timer timer=new Timer(true);
     private ViewPager2 adPager;
     private TimerTask timerTask;
@@ -124,5 +125,10 @@ public class CourseFragment extends Fragment {
         dots[currentADPage].setLayoutParams(newIndicatorLayoutParams);
         dots[currentADPage].setImageResource(R.drawable.ic_selected);
         prevSelected = currentADPage;
+    }
+
+    @Override
+    public void onLanguageChanged() {
+        //还没想好……先写着吧
     }
 }

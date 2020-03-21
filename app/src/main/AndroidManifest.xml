@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:windowFullscreen="true">
-        <activity android:name=".activity.PwdChgProtectActivity"></activity>
+        <activity android:name=".activity.PwdChgProtectActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.FrameworkActivity" />

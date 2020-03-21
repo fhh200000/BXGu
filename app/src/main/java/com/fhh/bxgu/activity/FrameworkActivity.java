@@ -1,5 +1,8 @@
 package com.fhh.bxgu.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -19,12 +22,14 @@ import com.fhh.bxgu.fragment.ExerciseFragment;
 import com.fhh.bxgu.fragment.MeFragment;
 import com.fhh.bxgu.R;
 import com.fhh.bxgu.shared.StaticVariablePlacer;
+import com.fhh.bxgu.utility.LanguageUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 
-public class FrameworkActivity extends AppCompatActivity implements MeFragment.Callbacks {
+public class FrameworkActivity extends AppCompatActivity implements MeFragment.Callbacks, LanguageUtil.Callbacks {
     private final FragmentManager fm = getSupportFragmentManager();
     private Fragment[] fragments;
     private TextView courseButton;
@@ -32,11 +37,21 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
     private TextView meButton; //没错TextView变成了按钮
     private TextView[] buttons;
     private int theme, mainColor,mainColorDark, currentTab = 0;
+    private BroadcastReceiver languageReceiver;
     //抽象出FrameworkActivity的接口。
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StaticVariablePlacer.meFragmentCallbacks = this;
+        StaticVariablePlacer.languageUtil = new LanguageUtil();
+        StaticVariablePlacer.languageUtil.register(this);
+        Locale locale = getResources().getConfiguration().locale;
+        StaticVariablePlacer.languageUtil.language = String.format(locale,"%s_%s",locale.getLanguage(),locale.getCountry());
+        onLanguageChanged();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_LOCALE_CHANGED);
+        languageReceiver = StaticVariablePlacer.languageUtil.getReceiver();
+        registerReceiver(languageReceiver, intentFilter);
         StaticVariablePlacer.screenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(StaticVariablePlacer.screenSize);
         DisplayMetrics metrics =new DisplayMetrics();
@@ -47,6 +62,8 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         setContentView(R.layout.activity_framework);
         //绑定按钮界面元件。
         Fragment courseFragment = new CourseFragment(),exerciseFragment = new ExerciseFragment(),meFragment = new MeFragment();
+        StaticVariablePlacer.languageUtil.register((LanguageUtil.Callbacks)exerciseFragment);
+        StaticVariablePlacer.languageUtil.register((LanguageUtil.Callbacks)courseFragment);
         courseButton = findViewById(R.id.button_course);
         exerciseButton = findViewById(R.id.button_exercise);
         meButton = findViewById(R.id.button_me);
@@ -95,7 +112,12 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         super.onSaveInstanceState(outBundle);
         outBundle.putSerializable("currentTab", currentTab);
     }
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        StaticVariablePlacer.languageUtil.unregister();
+        unregisterReceiver(languageReceiver);
+    }
     //抽象出切换页的函数。
     private void switchPage(int tab) {
         if (currentTab != tab) {
@@ -195,5 +217,11 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
     @Override
     public int getMainColorDark() {
         return mainColorDark;
+    }
+
+    @Override
+    public void onLanguageChanged() {
+        //Android会自动处理主界面的语言切换。
+        Toast.makeText(FrameworkActivity.this,String.format("Now the language is:%s",StaticVariablePlacer.languageUtil.language),Toast.LENGTH_SHORT).show();
     }
 }
