@@ -1,4 +1,4 @@
-package com.fhh.bxgu.component.exercise.chapter;
+package com.fhh.bxgu.component.exercise.question;
 
 import android.util.Log;
 
@@ -22,44 +22,40 @@ import okhttp3.Response;
 
 import static com.fhh.bxgu.shared.OKHttpHolder.ADDRESS_PREFIX;
 
-public class ChapterStorage {
-    static List<Chapter> chapters = new ArrayList<>();
-
-    static void load(ChapterStorage.Callbacks callback) {
-        ChapterStorage.callback = callback;
-        if(chapters.size()!=0)
-            return;
-        reload();
-    }
+public class QuestionStorage {
     public interface Callbacks {
-        void onReloadFinished();
+        void onReloadFinished(List<Question> questions);
     }
-    private static ChapterStorage.Callbacks callback;
-    public static void reload() {
-        chapters.clear();
+    private List<Question> questions = new ArrayList<>();
+    public void reload(int chapter,Callbacks callbacks) {
+        questions.clear();
         //去服务器拿数据。
-        final Request getImageFileRequest =  new Request.Builder()
-                .url(ADDRESS_PREFIX+"get_question_chapter?lang="+ StaticVariablePlacer.languageUtil.language)
+        final Request getImageFileRequest = new Request.Builder()
+                .url(ADDRESS_PREFIX + "load_question?lang=" + StaticVariablePlacer.languageUtil.language+"&chapter="+chapter)
                 .get()
                 .build();
         OKHttpHolder.clientWithCookie.newCall(getImageFileRequest).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e("ChapterStorage",e.toString());
+                Log.e("ChapterStorage", e.toString());
             }
+
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) {
                 try {
                     JSONArray array = new JSONArray(new String(Objects.requireNonNull(response.body()).bytes()));
-                    for(int i=0;i<array.length();i++) {
+                    for (int i = 0; i < array.length(); i++) {
                         JSONObject object = array.getJSONObject(i);
-                        Chapter chapter = new Chapter();
-                        chapter.setId(i+1);
-                        chapter.setCount(object.getInt("count"));
-                        chapter.setTitle(object.getString("name"));
-                        chapters.add(chapter);
-                        callback.onReloadFinished();
+                        Question question = new Question();
+                        question.setTitle(object.getString("desc"));
+                        question.setA(object.getString("a"));
+                        question.setB(object.getString("b"));
+                        question.setC(object.getString("c"));
+                        question.setD(object.getString("d"));
+                        question.setAnswer(object.getInt("answer") - 1);
+                        questions.add(question);
                     }
+                    callbacks.onReloadFinished(questions);
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }

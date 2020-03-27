@@ -107,15 +107,13 @@ public class CourseFragment extends Fragment implements LanguageUtil.Callbacks {
             }
         };
     }
-    private final Handler handler = new Handler(new Handler.Callback() {
-        public boolean handleMessage(@NotNull Message msg) {
+    private final Handler handler = new Handler(msg-> {
             if(msg.what == 1){
                 currentADPage = (currentADPage+1)%totalADPage;
                 adPager.setCurrentItem(currentADPage);
             }
             return false;
-        }
-    });
+        });
     private int prevSelected=0;
     private final ViewGroup.LayoutParams prevIndicatorLayoutParams= new LinearLayout.LayoutParams((int)(20*StaticVariablePlacer.dpRatio), (int)(20*StaticVariablePlacer.dpRatio));
     private final ViewGroup.LayoutParams newIndicatorLayoutParams = new LinearLayout.LayoutParams((int)(30*StaticVariablePlacer.dpRatio), (int)(30*StaticVariablePlacer.dpRatio));

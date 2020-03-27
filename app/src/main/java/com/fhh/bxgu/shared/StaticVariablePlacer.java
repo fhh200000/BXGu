@@ -3,6 +3,9 @@ package com.fhh.bxgu.shared;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.StyleRes;
+
 import com.fhh.bxgu.component.ad.ADBannerStorage;
 import com.fhh.bxgu.fragment.MeFragment;
 import com.fhh.bxgu.utility.LanguageUtil;
@@ -18,4 +21,5 @@ public class StaticVariablePlacer {
     public static Bitmap profileImage;
     public static String baseDirPath;
     public static LanguageUtil languageUtil;
+    public static @StyleRes int theme;
 }

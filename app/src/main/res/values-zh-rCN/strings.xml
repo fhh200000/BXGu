@@ -37,4 +37,5 @@
     <string name="str_operation_success">操作成功！</string>
     <string name="str_operation_failed">操作失败！</string>
     <string name="str_exec_count">共%d题</string>
+    <string name="str_bxgu_exercise">博学谷习题</string>
 </resources>

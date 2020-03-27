@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
@@ -22,6 +23,7 @@ import com.fhh.bxgu.activity.PwdChgProtectActivity;
 import com.fhh.bxgu.shared.StaticVariablePlacer;
 import com.fhh.bxgu.utility.BottomDialogUtil;
 import com.fhh.bxgu.utility.QRCodeUtil;
+import com.fhh.bxgu.utility.SettingsUtil;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -94,61 +96,46 @@ public class MeFragment extends Fragment {
         if(StaticVariablePlacer.profileImage!=null) {
             imageView.setImageBitmap(StaticVariablePlacer.profileImage);
         }
-        qrButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //生成二维码。
-                String data = "@Unknown";//只需要传输用户id即可。
-                ImageView generatedQR = new ImageView(getContext());
-                generatedQR.setImageBitmap(QRCodeUtil.createQRCodeBitmap(data, 512, 512,StaticVariablePlacer.meFragmentCallbacks.getMainColorDark()));
-                new AlertDialog.Builder(getContext())
-                        .setView(generatedQR)
-                        .setTitle(R.string.qr_title)
-                        .setPositiveButton(R.string.str_ok, null)
-                        .show();
-            }
+        qrButton.setOnClickListener(v -> {
+            //生成二维码。
+            String data = "@Unknown";//只需要传输用户id即可。
+            ImageView generatedQR = new ImageView(getContext());
+            generatedQR.setImageBitmap(QRCodeUtil.createQRCodeBitmap(data, 512, 512,StaticVariablePlacer.meFragmentCallbacks.getMainColorDark()));
+            new AlertDialog.Builder(getContext())
+                    .setView(generatedQR)
+                    .setTitle(R.string.qr_title)
+                    .setPositiveButton(R.string.str_ok, null)
+                    .show();
         });
-        updateTheme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Resources res = getResources();
-                final BottomDialogUtil.BottomDialogUtilBuilder builder = BottomDialogUtil.builder(getContext());
-                for(int i=0;i<5;i++) {
-                    View basicView = View.inflate(getContext(),R.layout.single_theme_bar,null);
-                    ImageView hintImage = basicView.findViewById(R.id.theme_preview);
-                    TextView hintString = basicView.findViewById(R.id.theme_name);
-                    hintImage.setBackgroundColor(res.getColor(colorPrimaries[i]));
-                    hintImage.getDrawable().setTint(res.getColor(colorDarkPrimaries[i]));
-                    hintString.setText(colorHints[i]);
-                    final int current = i;
-                    builder.addItem(basicView, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            StaticVariablePlacer.meFragmentCallbacks.onThemeChanged(colorNames[current]);
-                            builder.quit();
-                        }
-                    });
-                }
-                builder.show();
+        updateTheme.setOnClickListener(v -> {
+            Resources res = getResources();
+            final BottomDialogUtil.BottomDialogUtilBuilder builder = BottomDialogUtil.builder(getContext());
+            for(int i=0;i<5;i++) {
+                View basicView = View.inflate(getContext(),R.layout.single_theme_bar,null);
+                ImageView hintImage = basicView.findViewById(R.id.theme_preview);
+                TextView hintString = basicView.findViewById(R.id.theme_name);
+                hintImage.setBackgroundColor(res.getColor(colorPrimaries[i]));
+                hintImage.getDrawable().setTint(res.getColor(colorDarkPrimaries[i]));
+                hintString.setText(colorHints[i]);
+                final int current = i;
+                builder.addItem(basicView, v13 -> {
+                    StaticVariablePlacer.meFragmentCallbacks.onThemeChanged(colorNames[current]);
+                    builder.quit();
+                });
             }
+            builder.show();
         });
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                intent.putExtra("theme",StaticVariablePlacer.meFragmentCallbacks.getThemeId());
-                startActivityForResult(intent,666);
-            }
+        login.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.putExtra("theme",StaticVariablePlacer.meFragmentCallbacks.getThemeId());
+            startActivityForResult(intent,666);
         });
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StaticVariablePlacer.username = null;
-                login.setVisibility(View.VISIBLE);
-                logout.setVisibility(View.GONE);
-                userSettings.setVisibility(View.GONE);
-                profileName.setText(R.string.str_name);
-            }
+        logout.setOnClickListener(v -> {
+            StaticVariablePlacer.username = null;
+            login.setVisibility(View.VISIBLE);
+            logout.setVisibility(View.GONE);
+            userSettings.setVisibility(View.GONE);
+            profileName.setText(R.string.str_name);
         });
         userSettings.setOnClickListener(new View.OnClickListener() {
              BottomDialogUtil.BottomDialogUtilBuilder builder;
@@ -161,16 +148,13 @@ public class MeFragment extends Fragment {
                 changePassword.setText(R.string.btn_change_password);
                 changePassword.setTextSize(16);
                 changePassword.setTextColor(0xFF000000);
-                changePassword.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), PwdChgProtectActivity.class);
-                        intent.putExtra("theme",StaticVariablePlacer.meFragmentCallbacks.getThemeId());
-                        intent.putExtra("action",PwdChgProtectActivity.RESET_PASSWORD);
-                        startActivityForResult(intent,888);
-                        builder.quit();
+                changePassword.setOnClickListener(v1 -> {
+                    Intent intent = new Intent(getActivity(), PwdChgProtectActivity.class);
+                    intent.putExtra("theme",StaticVariablePlacer.meFragmentCallbacks.getThemeId());
+                    intent.putExtra("action",PwdChgProtectActivity.RESET_PASSWORD);
+                    startActivityForResult(intent,888);
+                    builder.quit();
 
-                    }
                 });
                 TextView setPasswordChallenge = new TextView(context);
                 setPasswordChallenge.setHeight((int)(60*StaticVariablePlacer.dpRatio));
@@ -178,15 +162,12 @@ public class MeFragment extends Fragment {
                 setPasswordChallenge.setGravity(Gravity.CENTER);
                 setPasswordChallenge.setTextColor(0xFF000000);
                 setPasswordChallenge.setTextSize(16);
-                setPasswordChallenge.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), PwdChgProtectActivity.class);
-                        intent.putExtra("theme",StaticVariablePlacer.meFragmentCallbacks.getThemeId());
-                        intent.putExtra("action",PwdChgProtectActivity.SET_PASSWORD_PROTECT);
-                        startActivityForResult(intent,888);
-                        builder.quit();
-                    }
+                setPasswordChallenge.setOnClickListener(v12 -> {
+                    Intent intent = new Intent(getActivity(), PwdChgProtectActivity.class);
+                    intent.putExtra("theme",StaticVariablePlacer.meFragmentCallbacks.getThemeId());
+                    intent.putExtra("action",PwdChgProtectActivity.SET_PASSWORD_PROTECT);
+                    startActivityForResult(intent,888);
+                    builder.quit();
                 });
                 builder = BottomDialogUtil.builder(context);
                 builder .addItem(changePassword)
@@ -194,6 +175,16 @@ public class MeFragment extends Fragment {
                         .show();
             }
         });
+        Switch autoUpdate = view.findViewById(R.id.switch_update);
+        if(SettingsUtil.get("auto_update")==null) {
+            SettingsUtil.put("auto_update",false);
+            SettingsUtil.save();
+        }
+        autoUpdate.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SettingsUtil.put("auto_update",isChecked);
+            SettingsUtil.save();
+        });
+        autoUpdate.setChecked((Boolean) SettingsUtil.get("auto_update"));
         return view;
     }
     @Override

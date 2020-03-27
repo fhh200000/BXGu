@@ -2,6 +2,7 @@ package com.fhh.bxgu.component.exercise.chapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -20,13 +21,15 @@ public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewHolder> 
     @Override
     public ChapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        return new ChapterViewHolder(layoutInflater.inflate(R.layout.single_exercise_chapter_bar,parent,false));
+        View v = layoutInflater.inflate(R.layout.single_exercise_chapter_bar,parent,false);
+        return new ChapterViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChapterViewHolder holder, final int position) {
         Chapter chapter = ChapterStorage.chapters.get(position);
-        holder.bind(chapter.getTitle(),context.getString(R.string.str_exec_count,chapter.getCount()));
+        holder.bind(position,chapter.getTitle(),context.getString(R.string.str_exec_count,chapter.getCount()));
+        holder.setOnClickListener(v -> ((ExerciseFragment.Callbacks)context).onChapterSelected(chapter));
     }
 
     @Override

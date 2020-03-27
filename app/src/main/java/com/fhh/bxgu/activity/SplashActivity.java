@@ -11,17 +11,13 @@ import com.fhh.bxgu.R;
 import com.fhh.bxgu.utility.SDPermUtil;
 import com.fhh.bxgu.component.ad.ADBannerStorage;
 import com.fhh.bxgu.shared.StaticVariablePlacer;
+import com.fhh.bxgu.utility.SettingsUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Objects;
-import java.util.Scanner;
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StaticVariablePlacer.username = null;
@@ -29,53 +25,39 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         SDPermUtil.verifyStoragePermissions(this);
-        final int theme;
-        String mTheme="";
-        try {
-            File mThemeFile = new File(getFilesDir().getAbsolutePath() + "theme.conf");
-            if (!mThemeFile.exists()) {
-
-                mThemeFile.createNewFile();
-                FileOutputStream fos = new FileOutputStream(mThemeFile);
-                fos.write("green".getBytes());
-                fos.flush();
-                fos.close();
-                mTheme = "green";
-            } else {
-                Scanner sc = new Scanner(new FileInputStream(mThemeFile));
-                mTheme = sc.nextLine();
-                sc.close();
-            }
+        SettingsUtil.baseDir = getFilesDir().getParent();
+        SettingsUtil.init();
+        if (SettingsUtil.get("theme") == null) {
+            SettingsUtil.put("theme", "blue");
+            SettingsUtil.save();
         }
-        catch (IOException ignored){
-            //此处不可能产生错误！
-        }
+        String mTheme = (String) SettingsUtil.get("theme");
             switch (mTheme.charAt(0)) {
                 case 'g': {
                     if(mTheme.charAt(2)=='e')
-                        theme = (R.style.green);
+                        StaticVariablePlacer.theme = (R.style.green);
                     else
-                        theme = (R.style.gray);
+                        StaticVariablePlacer.theme  = (R.style.gray);
                     break;
                 }
                 case 'b': {
-                    theme = (R.style.blue);
+                    StaticVariablePlacer.theme  = (R.style.blue);
                     break;
                 }
                 case 'y': {
-                    theme = (R.style.yellow);
+                    StaticVariablePlacer.theme  = (R.style.yellow);
                     break;
                 }
                 case 'p': {
-                    theme = (R.style.purple);
+                    StaticVariablePlacer.theme  = (R.style.purple);
                     break;
                 }
                 default: {
-                    theme = R.style.green;
+                    StaticVariablePlacer.theme  = R.style.green;
                 }
             }
 
-        setTheme(theme);
+        setTheme(StaticVariablePlacer.theme );
         setContentView(R.layout.activity_splash);
         //从这里开始偷偷下载广告。
         ADBannerStorage bannerStorage = new ADBannerStorage();
@@ -90,7 +72,6 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Intent intent = new Intent(SplashActivity.this, FrameworkActivity.class);
-                intent.putExtra("theme",theme);
                 startActivity(intent);
                 finish();
             }

@@ -8,7 +8,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,26 +16,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.fhh.bxgu.component.exercise.chapter.Chapter;
 import com.fhh.bxgu.fragment.CourseFragment;
+import com.fhh.bxgu.fragment.ExerciseDetailFragment;
 import com.fhh.bxgu.fragment.ExerciseFragment;
 import com.fhh.bxgu.fragment.MeFragment;
 import com.fhh.bxgu.R;
 import com.fhh.bxgu.shared.StaticVariablePlacer;
 import com.fhh.bxgu.utility.LanguageUtil;
+import com.fhh.bxgu.utility.SettingsUtil;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Locale;
 
-public class FrameworkActivity extends AppCompatActivity implements MeFragment.Callbacks, LanguageUtil.Callbacks {
+public class FrameworkActivity extends AppCompatActivity implements MeFragment.Callbacks, LanguageUtil.Callbacks,ExerciseFragment.Callbacks{
     private final FragmentManager fm = getSupportFragmentManager();
     private Fragment[] fragments;
     private TextView courseButton;
     private TextView exerciseButton;
     private TextView meButton; //没错TextView变成了按钮
     private TextView[] buttons;
-    private int theme, mainColor,mainColorDark, currentTab = 0;
+    private int mainColor,mainColorDark, currentTab = 0;
     private BroadcastReceiver languageReceiver;
     //抽象出FrameworkActivity的接口。
     @Override
@@ -57,8 +56,7 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         DisplayMetrics metrics =new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         StaticVariablePlacer.dpRatio = (float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
-        theme = getIntent().getIntExtra("theme", R.style.green);
-        setTheme(theme);
+        setTheme(StaticVariablePlacer.theme );
         setContentView(R.layout.activity_framework);
         //绑定按钮界面元件。
         Fragment courseFragment = new CourseFragment(),exerciseFragment = new ExerciseFragment(),meFragment = new MeFragment();
@@ -70,30 +68,21 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         fragments = new Fragment[]{courseFragment, exerciseFragment, meFragment};
         buttons = new TextView[]{courseButton, exerciseButton, meButton};
         //获取主要颜色。
-        TypedArray array = getTheme().obtainStyledAttributes(theme, new int[]{R.attr.colorPrimary,R.attr.colorPrimaryDark});
+        TypedArray array = getTheme().obtainStyledAttributes(StaticVariablePlacer.theme , new int[]{R.attr.colorPrimary,R.attr.colorPrimaryDark});
         mainColor = array.getColor(0, 0xFFFFFFFF);
         mainColorDark = array.getColor(1,0xFF000000);
         array.recycle();
-        courseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchPage(1);
-                switchPageTab(1);
-            }
+        courseButton.setOnClickListener(v -> {
+            switchPage(1);
+            switchPageTab(1);
         });
-        exerciseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchPage(2);
-                switchPageTab(2);
-            }
+        exerciseButton.setOnClickListener(v -> {
+            switchPage(2);
+            switchPageTab(2);
         });
-        meButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchPage(3);
-                switchPageTab(3);
-            }
+        meButton.setOnClickListener(v -> {
+            switchPage(3);
+            switchPageTab(3);
         });
         //将用户最后一次选择的tab记录下来（旋转屏幕时的切换）
         int tab;
@@ -139,47 +128,38 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
     }
     @Override
     public int getThemeId() {
-        return theme;
+        return StaticVariablePlacer.theme ;
     }
     @Override
     public void onThemeChanged(String theme) {
-        try {
-            File mThemeFile = new File(getFilesDir().getAbsolutePath() + "theme.conf");
-            //此处文件必然存在！
-            FileOutputStream fos = new FileOutputStream(mThemeFile);
-            fos.write(theme.getBytes());
-            fos.flush();
-            fos.close();
-
-        } catch (IOException ignored) {
-            //此处不可能产生错误！
-        }
+        SettingsUtil.put("theme", theme);
+        SettingsUtil.save();
         switch (theme.charAt(0)) {
             case 'g': {
                 if (theme.charAt(2) == 'e')
-                    this.theme = (R.style.green);
+                    StaticVariablePlacer.theme  = (R.style.green);
                 else
-                    this.theme = (R.style.gray);
+                    StaticVariablePlacer.theme  = (R.style.gray);
                 break;
             }
             case 'b': {
-                this.theme = (R.style.blue);
+                StaticVariablePlacer.theme  = (R.style.blue);
                 break;
             }
             case 'y': {
-                this.theme = (R.style.yellow);
+                StaticVariablePlacer.theme  = (R.style.yellow);
                 break;
             }
             case 'p': {
-                this.theme = (R.style.purple);
+                StaticVariablePlacer.theme  = (R.style.purple);
                 break;
             }
             default: {
-                this.theme = R.style.green;
+                StaticVariablePlacer.theme = R.style.green;
             }
         }
-        setTheme(this.theme);
-        TypedArray array = getTheme().obtainStyledAttributes(this.theme, new int[]{R.attr.colorPrimary,R.attr.colorPrimaryDark});
+        setTheme(StaticVariablePlacer.theme );
+        TypedArray array = getTheme().obtainStyledAttributes(StaticVariablePlacer.theme , new int[]{R.attr.colorPrimary,R.attr.colorPrimaryDark});
         mainColor = array.getColor(0, 0xFFFFFFFF);
         mainColorDark = array.getColor(1, 0xFFFFFFFF);
         array.recycle();
@@ -192,8 +172,6 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
         switchPageTab(tab);
         //切换状态栏的颜色。
         getWindow().setStatusBarColor(mainColorDark);
-        //更新intent中的数据。
-        getIntent().putExtra("theme",this.theme);
     }
     private static long lastClick = 0;
     @Override
@@ -222,6 +200,17 @@ public class FrameworkActivity extends AppCompatActivity implements MeFragment.C
     @Override
     public void onLanguageChanged() {
         //Android会自动处理主界面的语言切换。
-        Toast.makeText(FrameworkActivity.this,String.format("Now the language is:%s",StaticVariablePlacer.languageUtil.language),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onChapterSelected(Chapter chapter) {
+        //接口已经留出，暂时不对平板布局适配。
+        int id= chapter.getId();
+        String title = chapter.getTitle();
+        Intent intent = new Intent(FrameworkActivity.this,FragmentHolderActivity.class);
+        intent.putExtra("chapter",id);
+        intent.putExtra("title",title);
+        intent.putExtra("fragment", ExerciseDetailFragment.class.getName());
+        startActivity(intent);
     }
 }

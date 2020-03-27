@@ -9,7 +9,7 @@ public class Chapter {
     private int id;
     private String title;
 
-    public int getCount() {
+    int getCount() {
         return count;
     }
 
@@ -21,7 +21,7 @@ public class Chapter {
         this.id = id;
     }
 
-    public void setCount(int count) {
+    void setCount(int count) {
         this.count = count;
     }
 
@@ -29,7 +29,7 @@ public class Chapter {
         return title;
     }
 
-    public void setTitle(String title) {
+    void setTitle(String title) {
         this.title = title;
     }
     @NotNull

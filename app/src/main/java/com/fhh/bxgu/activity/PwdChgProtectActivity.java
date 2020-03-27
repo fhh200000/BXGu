@@ -5,9 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.text.InputType;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,17 +32,15 @@ import static com.fhh.bxgu.shared.OKHttpHolder.ADDRESS_PREFIX;
 public class PwdChgProtectActivity extends AppCompatActivity {
     public static final int RESET_PASSWORD=0;
     public static final int SET_PASSWORD_PROTECT=1;
-    private final Handler resultHandler = new Handler(new Handler.Callback() {
-        public boolean handleMessage(@NotNull Message msg) {
-            if(msg.what == 1){
-                Toast.makeText(PwdChgProtectActivity.this,R.string.str_operation_success,Toast.LENGTH_SHORT).show();
-                finish();
-            }
-            else {
-                Toast.makeText(PwdChgProtectActivity.this,R.string.str_operation_failed,Toast.LENGTH_SHORT).show();
-            }
-            return false;
+    private final Handler resultHandler = new Handler(msg -> {
+        if(msg.what == 1){
+            Toast.makeText(PwdChgProtectActivity.this,R.string.str_operation_success,Toast.LENGTH_SHORT).show();
+            finish();
         }
+        else {
+            Toast.makeText(PwdChgProtectActivity.this,R.string.str_operation_failed,Toast.LENGTH_SHORT).show();
+        }
+        return false;
     });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +49,7 @@ public class PwdChgProtectActivity extends AppCompatActivity {
         CircleImageView imageView;
         super.onCreate(savedInstanceState);
         //在注册界面的基础上更改。
-        int theme = getIntent().getIntExtra("theme", R.style.green);
-        setTheme(theme);
+        setTheme(StaticVariablePlacer.theme );
         setContentView(R.layout.activity_register);
         field1 = findViewById(R.id.register_username);
         field2 = findViewById(R.id.register_password);
@@ -70,75 +65,69 @@ public class PwdChgProtectActivity extends AppCompatActivity {
         //根据传入的不同操作，动态修改布局。
         if(getIntent().getIntExtra("action",RESET_PASSWORD)==RESET_PASSWORD) {
             field2.setHint(R.string.str_new_password);
-            confirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //判断两次输入是否一致
-                    if(!field2.getText().toString().equals(field3.getText().toString())) {
-                        Toast.makeText(PwdChgProtectActivity.this,R.string.str_password_not_match,Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    @NonNull String origPasswordAfterMD5 = Objects.requireNonNull(MD5Util.calculateMD5(field1.getText().toString()));
-                    @NonNull String newPasswordAfterMD5 = Objects.requireNonNull(MD5Util.calculateMD5(field2.getText().toString()));
-                    final Request changePasswordRequest =  new Request.Builder()
-                            .url(ADDRESS_PREFIX+"change_password")
-                            .post(new FormBody.Builder()
-                                    .add("username",StaticVariablePlacer.username)
-                                    .add("origpassword",origPasswordAfterMD5)
-                                    .add("newpassword",newPasswordAfterMD5)
-                                    .build())
-                            .build();
-                    OKHttpHolder.clientWithCookie.newCall(changePasswordRequest).enqueue(new Callback() {
-                        @Override
-                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                            resultHandler.sendEmptyMessage(0);
-                        }
-
-                        @Override
-                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                            if(Objects.requireNonNull(response.body()).string().equals("OK"))
-                                resultHandler.sendEmptyMessage(1);
-                            else
-                                resultHandler.sendEmptyMessage(0);
-                        }
-                    });
+            confirm.setOnClickListener(v -> {
+                //判断两次输入是否一致
+                if(!field2.getText().toString().equals(field3.getText().toString())) {
+                    Toast.makeText(PwdChgProtectActivity.this,R.string.str_password_not_match,Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                @NonNull String origPasswordAfterMD5 = Objects.requireNonNull(MD5Util.calculateMD5(field1.getText().toString()));
+                @NonNull String newPasswordAfterMD5 = Objects.requireNonNull(MD5Util.calculateMD5(field2.getText().toString()));
+                final Request changePasswordRequest =  new Request.Builder()
+                        .url(ADDRESS_PREFIX+"change_password")
+                        .post(new FormBody.Builder()
+                                .add("username",StaticVariablePlacer.username)
+                                .add("origpassword",origPasswordAfterMD5)
+                                .add("newpassword",newPasswordAfterMD5)
+                                .build())
+                        .build();
+                OKHttpHolder.clientWithCookie.newCall(changePasswordRequest).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        resultHandler.sendEmptyMessage(0);
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if(Objects.requireNonNull(response.body()).string().equals("OK"))
+                            resultHandler.sendEmptyMessage(1);
+                        else
+                            resultHandler.sendEmptyMessage(0);
+                    }
+                });
             });
         }
         else {
             field2.setHint(R.string.str_password_confirm_question);
             field2.setInputType(InputType.TYPE_CLASS_TEXT);
             field3.setHint(R.string.str_confirm_question_answer);
-            confirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //安全起见，密保答案采用MD5存储。
-                    @NonNull String questionAnswerAfterMD5 = Objects.requireNonNull(MD5Util.calculateMD5(field3.getText().toString()));
-                    @NonNull String passwordAfterMD5 = Objects.requireNonNull(MD5Util.calculateMD5(field1.getText().toString()));
-                    final Request changePasswordRequest =  new Request.Builder()
-                            .url(ADDRESS_PREFIX+"set_password_protect")
-                            .post(new FormBody.Builder()
-                                    .add("username",StaticVariablePlacer.username)
-                                    .add("password",passwordAfterMD5)
-                                    .add("protectquesion",field2.getText().toString())
-                                    .add("questionanswer",questionAnswerAfterMD5)
-                                    .build())
-                            .build();
-                    OKHttpHolder.clientWithCookie.newCall(changePasswordRequest).enqueue(new Callback() {
-                        @Override
-                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                            resultHandler.sendEmptyMessage(0);
-                        }
+            confirm.setOnClickListener(v -> {
+                //安全起见，密保答案采用MD5存储。
+                @NonNull String questionAnswerAfterMD5 = Objects.requireNonNull(MD5Util.calculateMD5(field3.getText().toString()));
+                @NonNull String passwordAfterMD5 = Objects.requireNonNull(MD5Util.calculateMD5(field1.getText().toString()));
+                final Request changePasswordRequest =  new Request.Builder()
+                        .url(ADDRESS_PREFIX+"set_password_protect")
+                        .post(new FormBody.Builder()
+                                .add("username",StaticVariablePlacer.username)
+                                .add("password",passwordAfterMD5)
+                                .add("protectquesion",field2.getText().toString())
+                                .add("questionanswer",questionAnswerAfterMD5)
+                                .build())
+                        .build();
+                OKHttpHolder.clientWithCookie.newCall(changePasswordRequest).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        resultHandler.sendEmptyMessage(0);
+                    }
 
-                        @Override
-                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                            if(Objects.requireNonNull(response.body()).string().equals("OK"))
-                                resultHandler.sendEmptyMessage(1);
-                            else
-                                resultHandler.sendEmptyMessage(0);
-                        }
-                    });
-                }
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if(Objects.requireNonNull(response.body()).string().equals("OK"))
+                            resultHandler.sendEmptyMessage(1);
+                        else
+                            resultHandler.sendEmptyMessage(0);
+                    }
+                });
             });
         }
     }
