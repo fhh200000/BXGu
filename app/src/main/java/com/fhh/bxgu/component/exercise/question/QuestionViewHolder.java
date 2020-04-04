@@ -13,7 +13,7 @@ class QuestionViewHolder extends RecyclerView.ViewHolder {
     private TextView[] choices;
     private TextView title;
     private int answer;
-
+    private boolean checked;
     QuestionViewHolder(@NonNull View itemView) {
         super(itemView);
         choices = new TextView[4];
@@ -25,6 +25,7 @@ class QuestionViewHolder extends RecyclerView.ViewHolder {
     }
     @SuppressLint("DefaultLocale")
     void bind(Question question,int pos) {
+        checked = false;
         choices[0].setText(question.getA());
         choices[1].setText(question.getB());
         choices[2].setText(question.getC());
@@ -36,11 +37,10 @@ class QuestionViewHolder extends RecyclerView.ViewHolder {
         }
     }
     private View.OnClickListener checkAnswer = v -> {
-        for(TextView i:choices) {
-            if(v==i) {
-                i.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.choice_error, 0, 0, 0);
-            }
+        if(!checked) {
+            checked = true;
+            ((TextView) v).setCompoundDrawablesWithIntrinsicBounds(R.mipmap.choice_error, 0, 0, 0);
+            choices[answer].setCompoundDrawablesWithIntrinsicBounds(R.mipmap.choice_right, 0, 0, 0);
         }
-        choices[answer].setCompoundDrawablesWithIntrinsicBounds(R.mipmap.choice_right, 0, 0, 0);
     };
 }

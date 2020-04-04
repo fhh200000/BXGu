@@ -38,4 +38,5 @@
     <string name="str_operation_failed">Operation failed!</string>
     <string name="str_exec_count">%d exercises</string>
     <string name="str_bxgu_exercise">BXGu Exercises</string>
+    <string name="str_no_internet">No Internet access.</string>
 </resources>

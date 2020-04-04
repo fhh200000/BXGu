@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -109,6 +110,10 @@ public class CourseFragment extends Fragment implements LanguageUtil.Callbacks {
     }
     private final Handler handler = new Handler(msg-> {
             if(msg.what == 1){
+                if(totalADPage==0) {
+                    Toast.makeText(getActivity(),R.string.str_no_internet,Toast.LENGTH_SHORT).show();
+                    return false;
+                }
                 currentADPage = (currentADPage+1)%totalADPage;
                 adPager.setCurrentItem(currentADPage);
             }
